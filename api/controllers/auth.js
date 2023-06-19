@@ -60,13 +60,7 @@ const loginUser = async (req, res) => {
     );
 
     res.cookie("token", token,
-      {
-        Samesite: "None",
-        secure: true,
-        httpOnly: true,
-        expires: new Date(0),
-        domain: "localhost.com " || "localhost" || "http://localhost:3000",
-      });
+      { domain: ".onrender.com", sameSite: "None", secure: true, httpOnly: true });
 
     res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
@@ -77,13 +71,7 @@ const loginUser = async (req, res) => {
 //  Logout user
 const logoutUser = async (req, res) => {
   res.cookie("token", "",
-    {
-      Samesite: "None",
-      secure: true,
-      httpOnly: true,
-      expires: new Date(0),
-      domain: "localhost.com " || "localhost" || "http://localhost:3000",
-    });
+    { domain: ".onrender.com", sameSite: "None", secure: true, httpOnly: true });
   res.status(200).json({ message: "Logout successful" });
 };
 
