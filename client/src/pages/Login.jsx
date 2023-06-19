@@ -27,7 +27,8 @@ const LoginPage = () => {
         }
       )
       .then((res) => {
-        window.location.href = "/";
+        console.log(res.data);
+        // window.location.href = "/";
       })
       .catch((err) => {
         setMessage(err.response.data.message);
