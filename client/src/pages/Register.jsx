@@ -32,8 +32,7 @@ const RegisterPage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }
-    , 500);
+    }, 300);
   }, []);
 
   if (userInfo.username !== undefined) {
