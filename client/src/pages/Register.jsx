@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
-import { UserContext } from "../UserContext";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -27,15 +26,15 @@ const RegisterPage = () => {
       });
   };
 
-  const { userInfo } = useContext(UserContext);
-
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 300);
   }, []);
 
-  if (userInfo.username !== undefined) {
+  const token = localStorage.getItem("token");
+
+  if (token !== undefined && token !== null) {
     window.location.href = "/";
   }
 

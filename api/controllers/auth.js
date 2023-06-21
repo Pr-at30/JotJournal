@@ -59,32 +59,37 @@ const loginUser = async (req, res) => {
       {}
     );
 
-    res.cookie("token", token,
-      { domain: "jotjournal.onrender.com/", sameSite: "None", secure: true, httpOnly: true });
-
-    res.status(200).json({ message: "Login successful", token, user });
+    res.status(200)
+      .header(
+        "auth-token", token
+      )
+      .json(
+        {
+          message: "Login successful",
+          token,
+          username: user.username,
+        });
   } catch (error) {
     res.status(500).json({ message: "Failed to login", error: error.message });
   }
 };
 
-//  Logout user
+// Logout user
 const logoutUser = async (req, res) => {
-  res.cookie("token", "",
-    { domain: "jotjournal.onrender.com/", sameSite: "None", secure: true, httpOnly: true });
-  res.status(200).json({ message: "Logout successful" });
-};
-
-// Profile
-const profile = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    res.status(200).json(decoded);
+    // Clear the authentication token from the client-side (browser)
+    // res.clearCookie("token", { domain: "jotjournal.onrender.com/", sameSite: "None", secure: true, httpOnly: true });
+    // Alternatively, if using headers
+
+    res.removeHeader("auth-token");
+
+    // Perform any necessary server-side operations, if applicable
+
+    res.status(200).json({ message: "Logout successful" });
   } catch (error) {
-    return res.status(200).json({ message: "Failed to authenticate" });
+    res.status(500).json({ message: "Failed to logout", error: error.message });
   }
 };
 
 
-module.exports = { registerUser, loginUser, logoutUser, profile };
+module.exports = { registerUser, loginUser, logoutUser };

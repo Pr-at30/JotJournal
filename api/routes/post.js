@@ -10,14 +10,16 @@ const uploadMiddleWare = multer(
 
 const router = express.Router();
 
+const auth = require("../middlewares/auth");
+
 // Create post
-router.post("/", uploadMiddleWare.single("file"), createPost);
+router.post("/", auth, uploadMiddleWare.single("file"), createPost);
 
 // Update post
-router.patch("/edit/:id", uploadMiddleWare.single("file"), updatePost);
+router.patch("/edit/:id", auth, uploadMiddleWare.single("file"), updatePost);
 
 // Delete post
-router.delete("/delete/:id", deletePost);
+router.delete("/delete/:id", auth, deletePost);
 
 // Get posts
 router.get("/", getPosts);

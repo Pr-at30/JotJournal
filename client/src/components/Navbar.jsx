@@ -1,41 +1,28 @@
-import { React, useState, useEffect, useContext } from "react";
+import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../UserContext"
-
 
 const Navbar = () => {
   const [isLogged, setIsLogged] = useState(false);
-  
-  // user info from context
-  const {userInfo, setUserInfo} = useContext(UserContext);
-
   const URL = process.env.REACT_APP_BACKEND_URL;
 
+  // Get the user info from local storage
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const checkLogged = async () => {
-      const res = await axios.get(`${URL}/api/auth/profile`, {
-        withCredentials: true,
-      });
-      if (res.data.message === "Failed to authenticate") {
-        setIsLogged(false);
-      } else {
-        setIsLogged(res.data);
-        setUserInfo(res.data);
-      }
-    };
-    checkLogged();
-  }, []);
+    if (token !== undefined && token !== null) {
+      setIsLogged(true);
+    }
+  }, [token]);
 
   const handleLogout = async () => {
-    await axios.get(`${URL}/api/auth/logout`, {
-      withCredentials: true,
-    });
+    await axios.get(`${URL}/api/auth/logout`, {});
+    // Remove the token and user data from local storage
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
     setIsLogged(false);
-    setUserInfo({});
     window.location.href = "/";
   };
-
 
   return (
     <nav className="flex justify-between items-center h-16 relative mx-auto px-4 shadow-md bg-base-200 font-bold ">

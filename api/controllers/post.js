@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 
 // Create post
 const createPost = async (req, res) => {
-
   // If no file is uploaded then dummy file is uploaded
   if (!req.file) {
     req.file = {
@@ -19,8 +18,8 @@ const createPost = async (req, res) => {
   fs.renameSync(path, newPath);
 
   try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = req.user;
+    const id = req.userId;
     const { title, summary, content } = req.body;
 
     const post = await Post.create({
@@ -28,8 +27,7 @@ const createPost = async (req, res) => {
       summary,
       content,
       cover: newPath,
-      author: decoded.id,
-      likesCount: 0,
+      author: id,
     });
     res.json(post);
   } catch (error) {

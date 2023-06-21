@@ -1,8 +1,8 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Editor from "../components/Editor";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
-
+import Loading from "../components/Loading";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -10,9 +10,26 @@ const CreatePost = () => {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const URL = process.env.REACT_APP_BACKEND_URL;
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 300);
+  }, []);
   
+  if (token === undefined || token === null) {
+    window.location.href = "/";
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
+
   const createNewPost = (e) => {
     e.preventDefault();
 
@@ -27,11 +44,11 @@ const CreatePost = () => {
     data.set("content", content);
     data.set("file", files[0]);
 
-
     axios
       .post(`${URL}/api/post`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         withCredentials: true,
       })
@@ -76,9 +93,7 @@ const CreatePost = () => {
             className="p-10 mb-12 rounded-sm text-base-100 "
           />
         </div>
-        {message && (
-          <div className="text-error text-sm mb-5">{message}</div>
-        )}
+        {message && <div className="text-error text-sm mb-5">{message}</div>}
 
         <button
           style={{ marginTop: "5px" }}

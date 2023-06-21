@@ -4,10 +4,7 @@ import axios from "axios";
 import { formatISO9075 } from "date-fns";
 import PageNotFound from "./PageNotFound";
 import { AiOutlineEdit } from "react-icons/ai";
-import { useContext } from "react";
-import { UserContext } from "../UserContext";
 import Loading from "../components/Loading";
-import Sharing from "../components/Sharing";
 import ShareModal from "../components/ShareModal";
 
 const PostPage = () => {
@@ -19,14 +16,19 @@ const PostPage = () => {
 
   useEffect(() => {
     axios
-      .get(`${URL}/api/post/${id}`)
+      .get(`${URL}/api/post/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => {
         setPost(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [id, URL]);
 
   const { title, createdAt, summary, content, cover } = post;
+
 
   // Checks if the content of the post has code blocks and add a class to the pre tag
   useEffect(() => {
@@ -48,16 +50,16 @@ const PostPage = () => {
   const imgPath = `${URL}/${cover}`;
 
   const author = post.author ? post.author.username : "Anonymous";
-
-  // user info from context
-  const { userInfo } = useContext(UserContext);
-  const user = userInfo ? userInfo.username : null;
-  console.log(user);
+  const user = JSON.parse(localStorage.getItem("username"));
 
   // Delete post
   const handleDelete = (id) => {
     axios
-      .delete(`${URL}/api/post/delete/${id}`)
+      .delete(`${URL}/api/post/delete/${id}`, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         window.location.href = "/";
@@ -126,9 +128,7 @@ const PostPage = () => {
                     </div>
                   ))}
               </div>
-              <ShareModal
-                url={`https://google.com`}
-              />
+              <ShareModal url={window.location.href} />
             </div>
 
             <div

@@ -17,7 +17,11 @@ const EditPost = () => {
 
   useEffect(() => {
     axios
-      .get(`${URL}/api/post/${id}`)
+      .get(`${URL}/api/post/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((res) => {
         console.log(res);
         setTitle(res.data.title);
@@ -44,6 +48,7 @@ const EditPost = () => {
       .patch(`${URL}/api/post/edit/${id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
         withCredentials: true,
       })

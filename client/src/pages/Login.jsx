@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Modal from "../components/Modal";
-import { UserContext } from "../UserContext";
 import Loading from "../components/Loading";
 
 const LoginPage = () => {
@@ -13,30 +12,26 @@ const LoginPage = () => {
 
   const URL = process.env.REACT_APP_BACKEND_URL;
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios
-      .post(
-        `${URL}/api/auth/login`,
-        {
-          username,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log(res.data);
-        // window.location.href = "/";
-      })
-      .catch((err) => {
-        setMessage(err.response.data.message);
-        console.log(err.response);
+    try {
+      const response = await axios.post(`${URL}/api/auth/login`, {
+        username,
+        password,
       });
-  };
+      const token = response.data.token;
+      const user = response.data.username;
+      // Store the token and user data in local storage
+      localStorage.setItem("token", token);
+      localStorage.setItem("username", JSON.stringify(user));
 
-  const { userInfo } = useContext(UserContext);
+      window.location.href = "/";
+    } catch (error) {
+      setMessage(error.response.data.message);
+      console.log(error.response);
+    }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -44,7 +39,10 @@ const LoginPage = () => {
     }, 300);
   }, []);
 
-  if (userInfo.username !== undefined) {
+  const token = JSON.parse(localStorage.getItem("token"));
+
+
+  if (token !== undefined && token !== null) {
     window.location.href = "/";
   }
 

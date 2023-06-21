@@ -11,13 +11,14 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const URL = process.env.REACT_APP_BACKEND_URL;
-  console.log(URL);
 
   useEffect(() => {
     document.title = "Home";
     axios
       .get(`${URL}/api/post`, {
-        withCredentials: true,
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
         params: {
           page: currentPage,
           pageSize: 3,
@@ -28,7 +29,7 @@ const Home = () => {
         setPosts(posts);
         setTotalPages(totalPages);
       });
-  }, [currentPage]);
+  }, [currentPage, URL]);
 
   const handlePageChange = (page) => {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
