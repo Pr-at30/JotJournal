@@ -10,11 +10,13 @@ import ShareModal from "../components/ShareModal";
 const PostPage = () => {
   const { id } = useParams();
 
+  const [loading, setLoading] = useState(true);
   const [post, setPost] = useState({});
 
   const URL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${URL}/api/post/${id}`, {
         headers: {
@@ -23,6 +25,7 @@ const PostPage = () => {
       })
       .then((res) => {
         setPost(res.data);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, [id, URL]);
@@ -32,6 +35,7 @@ const PostPage = () => {
 
   // Checks if the content of the post has code blocks and add a class to the pre tag
   useEffect(() => {
+    setLoading(true);
     const preTags = document.querySelectorAll("pre");
     preTags.forEach((tag) => {
       tag.classList.add(
@@ -66,8 +70,6 @@ const PostPage = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  const [loading, setLoading] = useState(true);
 
   if (loading) {
     return <Loading />;
