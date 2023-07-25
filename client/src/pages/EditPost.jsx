@@ -23,10 +23,10 @@ const EditPost = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         setTitle(res.data.title);
         setSummary(res.data.summary);
         setContent(res.data.content);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, [URL, id]);
@@ -48,7 +48,7 @@ const EditPost = () => {
       .patch(`${URL}/api/post/edit/${id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         withCredentials: true,
       })
@@ -63,11 +63,11 @@ const EditPost = () => {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000);
+  // }, []);
 
   if (loading) {
     return <Loading />;

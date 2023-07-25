@@ -19,7 +19,7 @@ const CreatePost = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 300);
   }, []);
   
   if (token === undefined || token === null) {
