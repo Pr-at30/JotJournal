@@ -66,7 +66,7 @@ const EditPost = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
   }, []);
 
   if (loading) {

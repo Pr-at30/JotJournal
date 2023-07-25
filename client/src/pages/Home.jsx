@@ -17,7 +17,7 @@ const Home = () => {
     axios
       .get(`${URL}/api/post`, {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         params: {
           page: currentPage,
@@ -28,6 +28,7 @@ const Home = () => {
         const { posts, totalPages } = res.data;
         setPosts(posts);
         setTotalPages(totalPages);
+        setLoading(false);
       });
   }, [currentPage, URL]);
 
@@ -35,16 +36,15 @@ const Home = () => {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000);
+  // }, []);
 
   if (loading) {
     return <Loading />;
   }
-
 
   return (
     <>

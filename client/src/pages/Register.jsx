@@ -29,7 +29,7 @@ const RegisterPage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
   }, []);
 
   const token = localStorage.getItem("token");

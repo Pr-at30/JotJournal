@@ -36,7 +36,7 @@ const LoginPage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 1000);
   }, []);
 
   const token = JSON.parse(localStorage.getItem("token"));
