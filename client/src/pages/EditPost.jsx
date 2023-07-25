@@ -29,7 +29,7 @@ const EditPost = () => {
         setContent(res.data.content);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [URL, id]);
 
   const editPost = (e) => {
     e.preventDefault();

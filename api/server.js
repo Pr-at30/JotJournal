@@ -7,7 +7,11 @@ const cookieParser = require('cookie-parser');
 
 // Middleware
 app.use(express.json());
-app.use(cors({ credentials: true, origin: `${process.env.CLIENT_URL}` }));
+app.use(cors({
+  credentials: true,
+  // origin: `${process.env.CLIENT_URL}`
+  origin: 'https://jot-journal.vercel.app/'
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
