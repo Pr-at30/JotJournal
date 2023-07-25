@@ -9,8 +9,8 @@ const cookieParser = require('cookie-parser');
 app.use(express.json());
 app.use(cors({
   credentials: true,
-  // origin: `${process.env.CLIENT_URL}`
-  origin: 'https://jot-journal.vercel.app/'
+  origin: `${process.env.CLIENT_URL}`
+  // origin: 'https://jot-journal.vercel.app/'
 }));
 app.use(express.json());
 app.use(cookieParser());
