@@ -16,7 +16,6 @@ const PostPage = () => {
   const URL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    setLoading(true);
     axios
       .get(`${URL}/api/post/${id}`, {
         headers: {
@@ -25,7 +24,6 @@ const PostPage = () => {
       })
       .then((res) => {
         setPost(res.data);
-        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, [id, URL]);
@@ -35,7 +33,6 @@ const PostPage = () => {
 
   // Checks if the content of the post has code blocks and add a class to the pre tag
   useEffect(() => {
-    setLoading(true);
     const preTags = document.querySelectorAll("pre");
     preTags.forEach((tag) => {
       tag.classList.add(
@@ -48,7 +45,6 @@ const PostPage = () => {
         "shadow-md"
       );
     });
-    setLoading(false);
   }, [content]);
 
   const imgPath = `${URL}/${cover}`;
@@ -70,6 +66,14 @@ const PostPage = () => {
       })
       .catch((err) => console.log(err));
   };
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }
+    , 1000);
+  }, []);
 
   if (loading) {
     return <Loading />;
