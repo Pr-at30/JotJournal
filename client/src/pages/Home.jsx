@@ -38,7 +38,7 @@ const Home = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 300);
+    }, 2000);
   }, []);
 
   if (loading) {
